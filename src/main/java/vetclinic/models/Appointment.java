@@ -17,11 +17,11 @@ public class Appointment {
     @Column(name = Columns.ID)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Columns.CUSTOMER_ID)
     private Customer customer;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Columns.SLOT_ID, nullable = false)
     private AppointmentSlot appointmentSlot;
 

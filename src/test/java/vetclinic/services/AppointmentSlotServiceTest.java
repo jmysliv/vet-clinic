@@ -28,7 +28,7 @@ class AppointmentSlotServiceTest {
         //given
         Doctor doctor = doctorService.add(DOCTOR_NAME, DOCTOR_PIN);
         //when
-        AppointmentSlot slot = service.addSlot(APPOINTMENT_DATE, doctor.getId(), DOCTOR_PIN);
+        AppointmentSlot slot = service.add(APPOINTMENT_DATE, doctor.getId(), DOCTOR_PIN);
         //then
         assertNotNull(slot);
         assertEquals(doctor, slot.getDoctor());
@@ -44,7 +44,7 @@ class AppointmentSlotServiceTest {
         Doctor doctor = doctorService.add(DOCTOR_NAME, DOCTOR_PIN);
         Doctor doctor2 = doctorService.add(DOCTOR_NAME, DOCTOR_PIN);
         //when
-        AppointmentSlot slot = service.addSlot(APPOINTMENT_DATE, doctor.getId(), DOCTOR_PIN);
+        AppointmentSlot slot = service.add(APPOINTMENT_DATE, doctor.getId(), DOCTOR_PIN);
         Runnable deleteNotExistingSlot = () -> service.delete(0,doctor.getId(), DOCTOR_PIN);
         Runnable deleteNotYourSlot = () -> service.delete(slot.getId(), doctor2.getId(), DOCTOR_PIN);
         //then
@@ -61,9 +61,9 @@ class AppointmentSlotServiceTest {
         //given
         Doctor doctor = doctorService.add(DOCTOR_NAME, DOCTOR_PIN);
         //when
-        AppointmentSlot slot = service.addSlot(APPOINTMENT_DATE, doctor.getId(), DOCTOR_PIN);
-        List<AppointmentSlot> slots = service.findDoctorAppointments(doctor.getId(), LocalDate.parse("2020-02-02"));
-        List<AppointmentSlot> slotsFromOtherDay = service.findDoctorAppointments(doctor.getId(), LocalDate.parse("2020-02-03"));
+        AppointmentSlot slot = service.add(APPOINTMENT_DATE, doctor.getId(), DOCTOR_PIN);
+        List<AppointmentSlot> slots = service.findByDoctorAndDate(doctor.getId(), LocalDate.parse("2020-02-02"));
+        List<AppointmentSlot> slotsFromOtherDay = service.findByDoctorAndDate(doctor.getId(), LocalDate.parse("2020-02-03"));
         //then
         assertEquals(slot, slots.get(0));
         assertEquals(0, slotsFromOtherDay.size());

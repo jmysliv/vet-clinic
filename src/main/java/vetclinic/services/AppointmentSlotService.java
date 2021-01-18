@@ -20,7 +20,7 @@ public class AppointmentSlotService {
     @Autowired
     DoctorService doctorService;
 
-    public AppointmentSlot addSlot(LocalDateTime date, String doctorId, String doctorPin) {
+    public AppointmentSlot add(LocalDateTime date, String doctorId, String doctorPin) {
         Doctor doctor = doctorService.checkIdAndPinNumber(doctorId, doctorPin);
         AppointmentSlot slot = new AppointmentSlot();
         slot.setDoctor(doctor);
@@ -39,7 +39,7 @@ public class AppointmentSlotService {
         return slot.get();
     }
 
-    public List<AppointmentSlot> findDoctorAppointments(String doctorId, LocalDate date) {
+    public List<AppointmentSlot> findByDoctorAndDate(String doctorId, LocalDate date) {
         LocalDateTime startTime = date.atStartOfDay();
         LocalDateTime endTime = date.plusDays(1).atStartOfDay();
         return repository.findByDoctorIdAndDateTime(doctorId, startTime, endTime);
@@ -47,5 +47,11 @@ public class AppointmentSlotService {
 
     public List<AppointmentSlot> findAppointmentSlots() {
         return repository.findAll();
+    }
+
+    public AppointmentSlot findById(int id) {
+        Optional<AppointmentSlot> slot = repository.findById(id);
+        if(slot.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slot with given id not found");
+        return slot.get();
     }
 }

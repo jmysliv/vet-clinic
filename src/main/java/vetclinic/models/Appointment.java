@@ -22,10 +22,11 @@ public class Appointment {
     private Customer customer;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = Columns.SLOT_ID)
+    @JoinColumn(name = Columns.SLOT_ID, nullable = false)
     private AppointmentSlot appointmentSlot;
 
     public static final String TABLE_NAME = "appointments";
+
     public static class Columns {
 
         public static final String ID = "id";

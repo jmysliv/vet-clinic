@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -19,10 +19,9 @@ public class AppointmentSlot {
     private int id;
 
     @Column(name = Columns.DATE_TIME)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private LocalDateTime dateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Columns.DOCTOR_ID)
     private Doctor doctor;
 
@@ -30,6 +29,7 @@ public class AppointmentSlot {
     private Appointment appointment;
 
     public static final String TABLE_NAME = "appointment_slots";
+
     public static class Columns {
 
         public static final String ID = "id";

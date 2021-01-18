@@ -18,7 +18,7 @@ public class Appointment {
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = Columns.CUSTOMER_ID)
+    @JoinColumn(name = Columns.CUSTOMER_ID, nullable = false)
     private Customer customer;
 
     @OneToOne(fetch = FetchType.EAGER)

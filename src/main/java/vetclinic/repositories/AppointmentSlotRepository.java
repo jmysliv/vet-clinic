@@ -15,7 +15,7 @@ public interface AppointmentSlotRepository extends JpaRepository<AppointmentSlot
             " where a.doctor_id = :doctorId" +
             " and a.date_time >= :startTime" +
             " and a.date_time < :endTime", nativeQuery = true)
-    List<AppointmentSlot> findByDoctorIdAndDateTime(@Param("doctorId") String doctorId,
+    List<AppointmentSlot> findByDoctorIdAndDateTime(@Param("doctorId") int doctorId,
                                                     @Param("startTime") LocalDateTime startTime,
                                                     @Param("endTime") LocalDateTime endTime);
 }

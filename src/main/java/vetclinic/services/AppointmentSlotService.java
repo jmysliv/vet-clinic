@@ -20,38 +20,39 @@ public class AppointmentSlotService {
     @Autowired
     DoctorService doctorService;
 
-    public AppointmentSlot add(LocalDateTime date, String doctorId, String doctorPin) {
-        Doctor doctor = doctorService.checkIdAndPinNumber(doctorId, doctorPin);
+    /**
+     * adds slots if doctor with given id exists
+     */
+    public AppointmentSlot add(LocalDateTime date, int doctorId) {
+        Doctor doctor = doctorService.findById(doctorId);
         AppointmentSlot slot = new AppointmentSlot();
         slot.setDoctor(doctor);
         slot.setDateTime(date);
         return repository.save(slot);
     }
 
-    public AppointmentSlot delete(int id, String doctorId, String doctorPin) {
-        Doctor doctor = doctorService.checkIdAndPinNumber(doctorId, doctorPin);
-        Optional<AppointmentSlot> slot = repository.findById(id);
-        if (slot.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slot with given id has not been found");
-        if (!slot.get().getDoctor().getId().equals(doctor.getId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Given slot doesn't belong to you.");
-        repository.delete(slot.get());
-        return slot.get();
-    }
-
-    public List<AppointmentSlot> findByDoctorAndDate(String doctorId, LocalDate date) {
+    /**
+     * finds appointments of given doctor in given day
+     */
+    public List<AppointmentSlot> findByDoctorAndDate(int doctorId, LocalDate date) {
         LocalDateTime startTime = date.atStartOfDay();
         LocalDateTime endTime = date.plusDays(1).atStartOfDay();
         return repository.findByDoctorIdAndDateTime(doctorId, startTime, endTime);
     }
 
-    public List<AppointmentSlot> findAppointmentSlots() {
+    /**
+     * finds all appointment slots
+     */
+    public List<AppointmentSlot> findAll() {
         return repository.findAll();
     }
 
+    /**
+     * finds slot with given id
+     */
     public AppointmentSlot findById(int id) {
         Optional<AppointmentSlot> slot = repository.findById(id);
-        if(slot.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slot with given id not found");
+        if (slot.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Slot with given id not found");
         return slot.get();
     }
 }

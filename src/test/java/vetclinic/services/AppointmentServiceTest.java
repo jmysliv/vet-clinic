@@ -30,10 +30,10 @@ class AppointmentServiceTest {
     AppointmentSlotService slotService;
 
     @Test
-    public void makeTest(){
+    public void makeTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME, PIN);
-        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId(), PIN);
+        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
         Customer customer = customerService.add(CUSTOMER_NAME, PIN);
         //when
         Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
@@ -46,10 +46,10 @@ class AppointmentServiceTest {
     }
 
     @Test
-    public void cancelErrorsTest(){
+    public void cancelErrorsTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME, PIN);
-        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId(), PIN);
+        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
         Customer customer = customerService.add(CUSTOMER_NAME, PIN);
         Customer customer2 = customerService.add(CUSTOMER_NAME, PIN);
         Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
@@ -64,10 +64,10 @@ class AppointmentServiceTest {
     }
 
     @Test
-    public void cancelTest(){
+    public void cancelTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME, PIN);
-        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId(), PIN);
+        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
         Customer customer = customerService.add(CUSTOMER_NAME, PIN);
         Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
         //when

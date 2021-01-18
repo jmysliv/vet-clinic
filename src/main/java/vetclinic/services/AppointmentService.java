@@ -22,16 +22,25 @@ public class AppointmentService {
     @Autowired
     AppointmentSlotService slotService;
 
+    /**
+     * makes appointment in given slot
+     * customer has to provide valid id and pin
+     */
     public Appointment make(int slotId, String customerId, String customerPin) {
         Customer customer = customerService.checkIdAndPinNumber(customerId, customerPin);
         AppointmentSlot slot = slotService.findById(slotId);
-        if(repository.findBySlotId(slotId).isPresent()) throw new ResponseStatusException(HttpStatus.CONFLICT, "Slot with given id is already taken");
+        if (repository.findBySlotId(slotId).isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Slot with given id is already taken");
         Appointment appointment = new Appointment();
         appointment.setAppointmentSlot(slot);
         appointment.setCustomer(customer);
         return repository.save(appointment);
     }
 
+    /**
+     * cancels appointment with given id
+     * customer has to provide valid id and pin
+     */
     public Appointment cancel(int id, String customerId, String customerPin) {
         Customer customer = customerService.checkIdAndPinNumber(customerId, customerPin);
         Optional<Appointment> appointment = repository.findById(id);
@@ -43,13 +52,20 @@ public class AppointmentService {
         return appointment.get();
     }
 
+    /**
+     * finds all appointments
+     */
     public List<Appointment> findAll() {
         return repository.findAll();
     }
 
-    public Appointment findById(int id){
+    /**
+     * finds appointment with given id
+     */
+    public Appointment findById(int id) {
         Optional<Appointment> appointment = repository.findById(id);
-        if(appointment.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment with given id not found");
+        if (appointment.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment with given id not found");
         return appointment.get();
     }
 }

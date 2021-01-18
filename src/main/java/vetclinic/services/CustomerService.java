@@ -35,15 +35,6 @@ public class CustomerService {
     }
 
     /**
-     * deletes customer from database for test purpose
-     */
-    public Customer delete(String id, String pin) {
-        Customer customer = checkIdAndPinNumber(id, pin);
-        repository.deleteById(id);
-        return customer;
-    }
-
-    /**
      * checks if given id and pin match with any customer in database
      */
     public Customer checkIdAndPinNumber(String id, String pin) {

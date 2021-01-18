@@ -22,7 +22,7 @@ public class AppointmentSlot {
     private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = Columns.DOCTOR_ID)
+    @JoinColumn(name = Columns.DOCTOR_ID, nullable = false)
     private Doctor doctor;
 
     @OneToOne(mappedBy = "appointmentSlot")

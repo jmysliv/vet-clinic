@@ -18,7 +18,7 @@ class CustomerServiceTest {
 
 
     @Test
-    public void checkIdAndPinNumberTest(){
+    public void checkIdAndPinNumberTest() {
         //given
         Customer createdCustomer = service.add(CUSTOMER_NAME, CUSTOMER_PIN);
         //when
@@ -32,8 +32,6 @@ class CustomerServiceTest {
         assertEquals(CUSTOMER_NAME, customer.getName());
         assertEquals(CUSTOMER_PIN, customer.getPin());
         assertEquals(createdCustomer.getId(), customer.getId());
-        //clean
-        service.delete(customer.getId(), CUSTOMER_PIN);
     }
 
     @Test
@@ -47,18 +45,5 @@ class CustomerServiceTest {
         assertNotNull(customer);
         assertEquals(CUSTOMER_NAME, customer.getName());
         assertEquals(CUSTOMER_PIN, customer.getPin());
-        //clean
-        service.delete(customer.getId(), CUSTOMER_PIN);
     }
-
-    @Test
-    public void deleteTest() {
-        //given
-        Customer customer = service.add(CUSTOMER_NAME, CUSTOMER_PIN);
-        //when
-        Customer deletedCustomer = service.delete(customer.getId(), CUSTOMER_PIN);
-        //then
-        assertEquals(customer.getId(), deletedCustomer.getId());
-    }
-
 }

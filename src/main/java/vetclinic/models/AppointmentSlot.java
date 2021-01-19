@@ -28,7 +28,7 @@ public class AppointmentSlot {
     @JoinColumn(name = Columns.DOCTOR_ID, nullable = false)
     private Doctor doctor;
 
-    @OneToOne(mappedBy = "appointmentSlot")
+    @OneToOne(mappedBy = "appointmentSlot", fetch = FetchType.LAZY)
     private Appointment appointment;
 
     public static final String TABLE_NAME = "appointment_slots";

@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.time.DateTimeException;
 import java.util.Objects;
 
 @ControllerAdvice
@@ -24,6 +25,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<CustomResponse<Object>> handleResponseStatusException(ResponseStatusException e) {
         CustomResponse<Object> response = new CustomResponse<>(e.getStatus(), e.getReason(), null);
+        return response.generateResponseEntity();
+    }
+
+    @ExceptionHandler(DateTimeException.class)
+    public ResponseEntity<CustomResponse<Object>> handleDateTimeException(DateTimeException e) {
+        CustomResponse<Object> response = new CustomResponse<>(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         return response.generateResponseEntity();
     }
 

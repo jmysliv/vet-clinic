@@ -3,6 +3,7 @@ package vetclinic.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import vetclinic.models.AddSlotData;
 import vetclinic.models.AppointmentSlot;
 import vetclinic.models.Doctor;
 
@@ -26,7 +27,7 @@ class AppointmentSlotServiceTest {
         //given
         Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
         //when
-        AppointmentSlot slot = service.add(APPOINTMENT_DATE, doctor.getId());
+        AppointmentSlot slot = service.add(new AddSlotData(String.valueOf(doctor.getId()), APPOINTMENT_DATE.toString()));
         AppointmentSlot foundSlot = service.findById(slot.getId());
         //then
         assertNotNull(foundSlot);
@@ -41,7 +42,7 @@ class AppointmentSlotServiceTest {
         //given
         Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
         //when
-        AppointmentSlot slot = service.add(APPOINTMENT_DATE, doctor.getId());
+        AppointmentSlot slot = service.add(new AddSlotData(String.valueOf(doctor.getId()), APPOINTMENT_DATE.toString()));
         List<AppointmentSlot> slots = service.findByDoctorAndDate(doctor.getId(), LocalDate.parse("2020-02-02"));
         List<AppointmentSlot> slotsFromOtherDay = service.findByDoctorAndDate(doctor.getId(), LocalDate.parse("2020-02-03"));
         //then

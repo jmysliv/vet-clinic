@@ -30,30 +30,30 @@ class AppointmentServiceTest {
     public void makeTest() {
         //given
         Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
-        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
+        AppointmentSlot slot = slotService.add(new AddSlotData(String.valueOf(doctor.getId()), APPOINTMENT_DATE.toString()));
         Customer customer = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
         //when
-        Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
+        AppointmentSlot appointmentSlot = service.make(slot.getId(), customer.getId(), PIN);
         Runnable makeAppointmentOnTakenSlot = () -> service.make(slot.getId(), customer.getId(), PIN);
         //then
         assertThrows(ResponseStatusException.class, makeAppointmentOnTakenSlot::run);
-        assertNotNull(appointment);
-        assertEquals(customer, appointment.getCustomer());
-        assertEquals(slot.getId(), appointment.getAppointmentSlot().getId());
+        assertNotNull(appointmentSlot);
+        assertNotNull(appointmentSlot.getAppointment());
+        assertEquals(slot.getId(), appointmentSlot.getId());
     }
 
     @Test
     public void cancelErrorsTest() {
         //given
         Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
-        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
+        AppointmentSlot slot = slotService.add(new AddSlotData(String.valueOf(doctor.getId()), APPOINTMENT_DATE.toString()));
         Customer customer = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
         Customer customer2 = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
-        Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
+        AppointmentSlot appointmentSlot = service.make(slot.getId(), customer.getId(), PIN);
         //when
-        Runnable cancelWithWrongPin = () -> service.cancel(appointment.getId(), customer.getId(), WRONG_PIN);
+        Runnable cancelWithWrongPin = () -> service.cancel(appointmentSlot.getId(), customer.getId(), WRONG_PIN);
         Runnable cancelWithWrongId = () -> service.cancel(0, customer.getId(), PIN);
-        Runnable cancelNotYourAppointment = () -> service.cancel(appointment.getId(), customer2.getId(), WRONG_PIN);
+        Runnable cancelNotYourAppointment = () -> service.cancel(appointmentSlot.getId(), customer2.getId(), WRONG_PIN);
         //then
         assertThrows(ResponseStatusException.class, cancelWithWrongPin::run);
         assertThrows(ResponseStatusException.class, cancelWithWrongId::run);
@@ -64,13 +64,13 @@ class AppointmentServiceTest {
     public void cancelTest() {
         //given
         Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
-        AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
+        AppointmentSlot slot = slotService.add(new AddSlotData(String.valueOf(doctor.getId()), APPOINTMENT_DATE.toString()));
         Customer customer = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
-        Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
+        AppointmentSlot appointmentSlot = service.make(slot.getId(), customer.getId(), PIN);
         //when
-        Appointment deletedAppointment = service.cancel(appointment.getId(), customer.getId(), PIN);
+        AppointmentSlot deletedAppointment = service.cancel(appointmentSlot.getId(), customer.getId(), PIN);
         //then
         assertNotNull(deletedAppointment);
-        assertEquals(appointment.getId(), deletedAppointment.getId());
+        assertNull(deletedAppointment.getAppointment());
     }
 }

@@ -1,5 +1,6 @@
 package vetclinic.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@JsonIgnoreProperties(value = "pin")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +26,7 @@ public class Customer {
     @Column(name = Columns.NAME, nullable = false, length = 24)
     private String name;
 
+    @JsonIgnore
     @NotNull
     @Column(name = Columns.PIN, nullable = false, length = 4)
     @Size(min = 4, max = 4)

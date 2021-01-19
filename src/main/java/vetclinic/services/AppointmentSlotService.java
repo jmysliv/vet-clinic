@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import vetclinic.models.AddSlotData;
 import vetclinic.models.AppointmentSlot;
 import vetclinic.models.Doctor;
 import vetclinic.repositories.AppointmentSlotRepository;
@@ -23,11 +24,11 @@ public class AppointmentSlotService {
     /**
      * adds slots if doctor with given id exists
      */
-    public AppointmentSlot add(LocalDateTime date, int doctorId) {
-        Doctor doctor = doctorService.findById(doctorId);
+    public AppointmentSlot add(AddSlotData data) {
+        Doctor doctor = doctorService.findById(data.parseDoctorId());
         AppointmentSlot slot = new AppointmentSlot();
         slot.setDoctor(doctor);
-        slot.setDateTime(date);
+        slot.setDateTime(data.parseDateTime());
         return repository.save(slot);
     }
 

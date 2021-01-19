@@ -1,5 +1,6 @@
 package vetclinic.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = Appointment.TABLE_NAME)
 public class Appointment {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = Columns.ID, unique = true, nullable = false)
@@ -23,6 +25,7 @@ public class Appointment {
     @JoinColumn(name = Columns.CUSTOMER_ID, nullable = false)
     private Customer customer;
 
+    @JsonIgnore
     @NotNull
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = Columns.SLOT_ID, nullable = false)

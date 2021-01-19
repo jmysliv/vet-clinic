@@ -24,7 +24,7 @@ public class AppointmentSlot {
     private LocalDateTime dateTime;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = Columns.DOCTOR_ID, nullable = false)
     private Doctor doctor;
 

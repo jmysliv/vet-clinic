@@ -19,10 +19,14 @@ public class Doctor {
     @Column(name = Columns.ID, unique = true, nullable = false)
     private int id;
 
-    @NotNull
-    @Size(max = 24)
+    @NotNull(message = "name must not be null")
+    @Size(min = 1, max = 24, message = "name maximum length is 24, and minimum 1")
     @Column(name = Columns.NAME, nullable = false, length = 24)
     private String name;
+
+    public Doctor(String name){
+        this.name = name;
+    }
 
     public static final String TABLE_NAME = "doctors";
 

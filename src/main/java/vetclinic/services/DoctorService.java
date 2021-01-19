@@ -19,9 +19,7 @@ public class DoctorService {
     /**
      * adds doctor to database
      */
-    public Doctor add(String name) {
-        Doctor doctor = new Doctor();
-        doctor.setName(name);
+    public Doctor add(Doctor doctor) {
         return repository.save(doctor);
     }
 

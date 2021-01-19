@@ -24,7 +24,7 @@ class AppointmentSlotServiceTest {
     @Test
     public void addAndFindTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
         //when
         AppointmentSlot slot = service.add(APPOINTMENT_DATE, doctor.getId());
         AppointmentSlot foundSlot = service.findById(slot.getId());
@@ -32,21 +32,20 @@ class AppointmentSlotServiceTest {
         assertNotNull(foundSlot);
         assertEquals(doctor, slot.getDoctor());
         assertEquals(APPOINTMENT_DATE, slot.getDateTime());
-        assertEquals(slot, foundSlot);
+        assertEquals(slot.getId(), foundSlot.getId());
     }
 
 
     @Test
     public void doctorSlotsTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
         //when
         AppointmentSlot slot = service.add(APPOINTMENT_DATE, doctor.getId());
         List<AppointmentSlot> slots = service.findByDoctorAndDate(doctor.getId(), LocalDate.parse("2020-02-02"));
         List<AppointmentSlot> slotsFromOtherDay = service.findByDoctorAndDate(doctor.getId(), LocalDate.parse("2020-02-03"));
-        System.out.println(service.findAll());
         //then
-        assertEquals(slot, slots.get(0));
+        assertEquals(slot.getId(), slots.get(0).getId());
         assertEquals(0, slotsFromOtherDay.size());
     }
 }

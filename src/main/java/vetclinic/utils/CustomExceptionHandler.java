@@ -11,21 +11,26 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Objects;
 
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
-        return new ResponseEntity<>(new CustomResponse<>(HttpStatus.BAD_REQUEST, e.getMessage(), null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<CustomResponse<Object>> handleConstraintViolationException(ConstraintViolationException e) {
+        CustomResponse<Object> response = new CustomResponse<>(HttpStatus.BAD_REQUEST, e.getMessage(), null);
+        return response.generateResponseEntity();
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException e) {
-        return new ResponseEntity<>(new CustomResponse<>(e.getStatus(), e.getReason(), null), e.getStatus());
+    public ResponseEntity<CustomResponse<Object>> handleResponseStatusException(ResponseStatusException e) {
+        CustomResponse<Object> response = new CustomResponse<>(e.getStatus(), e.getReason(), null);
+        return response.generateResponseEntity();
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return new ResponseEntity<>(new CustomResponse<>(status, "Invalid request body", null), status);
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new ResponseEntity<>(
+                new CustomResponse<>(status, Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage(), null), status);
     }
 }

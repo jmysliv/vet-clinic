@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.server.ResponseStatusException;
-import vetclinic.models.Appointment;
-import vetclinic.models.AppointmentSlot;
-import vetclinic.models.Customer;
-import vetclinic.models.Doctor;
+import vetclinic.models.*;
 
 import java.time.LocalDateTime;
 
@@ -32,9 +29,9 @@ class AppointmentServiceTest {
     @Test
     public void makeTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
         AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
-        Customer customer = customerService.add(CUSTOMER_NAME, PIN);
+        Customer customer = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
         //when
         Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
         Runnable makeAppointmentOnTakenSlot = () -> service.make(slot.getId(), customer.getId(), PIN);
@@ -42,16 +39,16 @@ class AppointmentServiceTest {
         assertThrows(ResponseStatusException.class, makeAppointmentOnTakenSlot::run);
         assertNotNull(appointment);
         assertEquals(customer, appointment.getCustomer());
-        assertEquals(slot, appointment.getAppointmentSlot());
+        assertEquals(slot.getId(), appointment.getAppointmentSlot().getId());
     }
 
     @Test
     public void cancelErrorsTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
         AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
-        Customer customer = customerService.add(CUSTOMER_NAME, PIN);
-        Customer customer2 = customerService.add(CUSTOMER_NAME, PIN);
+        Customer customer = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
+        Customer customer2 = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
         Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
         //when
         Runnable cancelWithWrongPin = () -> service.cancel(appointment.getId(), customer.getId(), WRONG_PIN);
@@ -66,9 +63,9 @@ class AppointmentServiceTest {
     @Test
     public void cancelTest() {
         //given
-        Doctor doctor = doctorService.add(DOCTOR_NAME);
+        Doctor doctor = doctorService.add(new Doctor(DOCTOR_NAME));
         AppointmentSlot slot = slotService.add(APPOINTMENT_DATE, doctor.getId());
-        Customer customer = customerService.add(CUSTOMER_NAME, PIN);
+        Customer customer = customerService.add(new AddCustomerData(CUSTOMER_NAME, PIN));
         Appointment appointment = service.make(slot.getId(), customer.getId(), PIN);
         //when
         Appointment deletedAppointment = service.cancel(appointment.getId(), customer.getId(), PIN);

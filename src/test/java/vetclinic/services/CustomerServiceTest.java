@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.server.ResponseStatusException;
+import vetclinic.models.AddCustomerData;
 import vetclinic.models.Customer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ class CustomerServiceTest {
     @Test
     public void checkIdAndPinNumberTest() {
         //given
-        Customer createdCustomer = service.add(CUSTOMER_NAME, CUSTOMER_PIN);
+        Customer createdCustomer = service.add(new AddCustomerData(CUSTOMER_NAME, CUSTOMER_PIN));
         //when
         Customer customer = service.checkIdAndPinNumber(createdCustomer.getId(), CUSTOMER_PIN);
         Runnable checkingIdWithNotValidPin = () -> service.checkIdAndPinNumber(createdCustomer.getId(), NOT_VALID_PIN);
@@ -38,8 +39,8 @@ class CustomerServiceTest {
     public void addTest() {
         //given
         //when
-        Customer customer = service.add(CUSTOMER_NAME, CUSTOMER_PIN);
-        Runnable addingWithInvalidPin = () -> service.add(CUSTOMER_NAME, NOT_VALID_PIN);
+        Customer customer = service.add(new AddCustomerData(CUSTOMER_NAME, CUSTOMER_PIN));
+        Runnable addingWithInvalidPin = () -> service.add(new AddCustomerData(CUSTOMER_NAME, NOT_VALID_PIN));
         //then
         assertThrows(ResponseStatusException.class, addingWithInvalidPin::run);
         assertNotNull(customer);

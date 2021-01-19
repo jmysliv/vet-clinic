@@ -18,7 +18,7 @@ class DoctorServiceTest {
     public void addAndFindTest() {
         //given
         //when
-        Doctor doctor = service.add(DOCTOR_NAME);
+        Doctor doctor = service.add(new Doctor(DOCTOR_NAME));
         Doctor foundDoctor = service.findById(doctor.getId());
         Runnable doctorNotFound = () -> service.findById(0);
         //then

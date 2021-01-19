@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import vetclinic.models.AddCustomerData;
 import vetclinic.models.Customer;
 import vetclinic.repositories.CustomerRepository;
 
@@ -19,8 +20,8 @@ public class CustomerService {
     /**
      * generates 4 digits id and adds customer to database
      */
-    public Customer add(String name, String pin) {
-        if (pin.length() != 4)
+    public Customer add(AddCustomerData data) {
+        if (data.getPin().length() != 4)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "PIN should be 4 digits String");
         Random rand = new Random();
         String id;
@@ -29,8 +30,8 @@ public class CustomerService {
         } while (repository.existsById(id));
         Customer customer = new Customer();
         customer.setId(id);
-        customer.setPin(pin);
-        customer.setName(name);
+        customer.setPin(data.getPin());
+        customer.setName(data.getName());
         return repository.save(customer);
     }
 

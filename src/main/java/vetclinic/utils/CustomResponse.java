@@ -12,7 +12,7 @@ public class CustomResponse<T> {
     private String message;
     private T data;
 
-    public ResponseEntity<CustomResponse<T>> generateResponseEntity(){
+    public ResponseEntity<CustomResponse<T>> generateResponseEntity() {
         return new ResponseEntity<>(this, status);
     }
 }

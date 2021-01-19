@@ -24,7 +24,7 @@ public class Doctor {
     @Column(name = Columns.NAME, nullable = false, length = 24)
     private String name;
 
-    public Doctor(String name){
+    public Doctor(String name) {
         this.name = name;
     }
 

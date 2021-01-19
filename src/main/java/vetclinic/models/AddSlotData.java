@@ -19,11 +19,11 @@ public class AddSlotData {
     @Pattern(regexp = "(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2})\\:(\\d{2})\\:(\\d{2})", message = "dateTime should be in format: YYYY-MM-DDTHH:MM:SS")
     private String dateTime;
 
-    public int parseDoctorId(){
+    public int parseDoctorId() {
         return Integer.parseInt(doctorId);
     }
 
-    public LocalDateTime parseDateTime(){
+    public LocalDateTime parseDateTime() {
         return LocalDateTime.parse(dateTime);
     }
 }

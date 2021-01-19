@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import vetclinic.models.Doctor;
 import vetclinic.repositories.DoctorRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,12 @@ public class DoctorService {
         Optional<Doctor> doctor = repository.findById(id);
         if (doctor.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Doctor with given id not found");
         return doctor.get();
+    }
+
+    /**
+     * finds all doctors
+     */
+    public List<Doctor> findAll() {
+        return repository.findAll();
     }
 }

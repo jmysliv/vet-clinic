@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -14,13 +15,15 @@ import javax.persistence.*;
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = Columns.ID)
+    @Column(name = Columns.ID, unique = true, nullable = false)
     private int id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Columns.CUSTOMER_ID, nullable = false)
     private Customer customer;
 
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Columns.SLOT_ID, nullable = false)
     private AppointmentSlot appointmentSlot;

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,12 +16,14 @@ import java.time.LocalDateTime;
 public class AppointmentSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = Columns.ID)
+    @Column(name = Columns.ID, unique = true, nullable = false)
     private int id;
 
-    @Column(name = Columns.DATE_TIME)
+    @NotNull
+    @Column(name = Columns.DATE_TIME, nullable = false)
     private LocalDateTime dateTime;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Columns.DOCTOR_ID, nullable = false)
     private Doctor doctor;

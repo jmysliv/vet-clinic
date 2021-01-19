@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -14,10 +16,12 @@ import javax.persistence.*;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = Columns.ID)
+    @Column(name = Columns.ID, unique = true, nullable = false)
     private int id;
 
-    @Column(name = Columns.NAME, nullable = false)
+    @NotNull
+    @Size(max = 24)
+    @Column(name = Columns.NAME, nullable = false, length = 24)
     private String name;
 
     public static final String TABLE_NAME = "doctors";

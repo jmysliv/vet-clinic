@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @JsonIgnoreProperties(value = "pin")
@@ -20,9 +21,12 @@ public class Customer {
     @Size(min = 4, max = 4)
     private String id;
 
-    @Column(name = Columns.NAME, nullable = false)
+    @NotNull
+    @Size(max = 24)
+    @Column(name = Columns.NAME, nullable = false, length = 24)
     private String name;
 
+    @NotNull
     @Column(name = Columns.PIN, nullable = false, length = 4)
     @Size(min = 4, max = 4)
     private String pin;

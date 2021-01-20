@@ -42,7 +42,7 @@ public class AppointmentSlotService {
     }
 
     /**
-     * finds all appointment slots
+     * finds all slots
      */
     public List<AppointmentSlot> findAll() {
         return repository.findAll();

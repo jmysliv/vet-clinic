@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -20,13 +19,11 @@ public class Appointment {
     @Column(name = Columns.ID, unique = true, nullable = false)
     private int id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = Columns.CUSTOMER_ID, nullable = false)
     private Customer customer;
 
     @JsonIgnore
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = Columns.SLOT_ID, nullable = false)
     private AppointmentSlot appointmentSlot;
